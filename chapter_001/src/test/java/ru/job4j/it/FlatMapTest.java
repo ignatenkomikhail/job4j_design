@@ -3,7 +3,6 @@ package ru.job4j.it;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import org.junit.Test;
-import ru.job4j.it.FlatMap;
 
 import java.util.Iterator;
 import java.util.List;

@@ -14,7 +14,7 @@ public class FlatMap<T> implements Iterator<T> {
 
     @Override
     public boolean hasNext() {
-        if (data.hasNext()
+        while (data.hasNext()
                 && (cursor == null || !cursor.hasNext())) {
             cursor = data.next();
         }
