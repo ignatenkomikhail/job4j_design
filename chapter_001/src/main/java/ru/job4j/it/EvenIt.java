@@ -30,13 +30,6 @@ public class EvenIt implements Iterator<Integer> {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        Integer rslt = data[point];
-        while (point < data.length - 1) {
-            point++;
-            if (data[point] % 2 == 0) {
-                break;
-            }
-        }
-        return rslt;
+        return data[point++];
     }
 }
