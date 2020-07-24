@@ -3,6 +3,7 @@ package ru.job4j.generic;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -19,11 +20,6 @@ public class SimpleArrayTest {
         data.add(0);
         data.add(1);
         it = data.iterator();
-    }
-
-    @Test(expected = IndexOutOfBoundsException.class)
-    public void whenAddArrayIsFull() {
-        data.add(2);
     }
 
     @Test
@@ -51,6 +47,13 @@ public class SimpleArrayTest {
         assertThat(it.hasNext(), is(true));
         assertThat(it.next(), is(1));
         assertThat(it.hasNext(), is(false));
+        it.next();
+    }
+
+    @Test(expected = ConcurrentModificationException.class)
+    public void whenCorruptedIt() {
+        it = data.iterator();
+        data.add(2);
         it.next();
     }
 }
