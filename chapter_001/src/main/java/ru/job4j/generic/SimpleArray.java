@@ -30,7 +30,6 @@ public class SimpleArray<T> implements Iterable<T> {
 
     public T get(int index) {
         Objects.checkIndex(index, this.index);
-        this.modCount++;
         return (T) this.data[index];
     }
 
