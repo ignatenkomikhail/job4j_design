@@ -47,7 +47,7 @@ public class SimpleList<T> implements Iterable<T> {
     }
 
     private class It implements Iterator<T> {
-        private int cursor = 0;
+        Node<T> node = first;
         private int expectedModCount = 0;
 
         {
@@ -59,7 +59,7 @@ public class SimpleList<T> implements Iterable<T> {
             if (expectedModCount != modCount) {
                 throw new ConcurrentModificationException();
             }
-            return cursor < size;
+            return node != null;
         }
 
         @Override
@@ -67,7 +67,9 @@ public class SimpleList<T> implements Iterable<T> {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            return get(cursor++);
+            T value = node.node;
+            node = node.next;
+            return value;
         }
     }
 
