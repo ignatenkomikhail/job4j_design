@@ -26,9 +26,17 @@ public class SimpleList<T> implements Iterable<T> {
 
     public T get(int index) {
         Objects.checkIndex(index, size);
-        Node<T> n = first;
-        for (int i = 0; i < index; i++) {
-            n = n.next;
+        Node<T> n;
+        if (index < (size / 2)) {
+            n = first;
+            for (int i = 0; i < index; i++) {
+                n = n.next;
+            }
+        } else {
+            n = last;
+            for (int i = size - 1; i > index; i--) {
+                n = n.next;
+            }
         }
         return n.node;
     }
