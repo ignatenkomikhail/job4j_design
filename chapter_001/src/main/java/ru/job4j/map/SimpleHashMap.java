@@ -3,8 +3,10 @@ package ru.job4j.map;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class SimpleHashMap<K, V> implements Iterable<V> {
+    private static final float LOAD_FACTOR = 0.75f;
     private Node<K, V>[] table = new Node[2];
     private int size = 0;
     private int modCount = 0;
@@ -14,11 +16,11 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
 
     public boolean insert(K key, V value) {
         boolean result = false;
-        if (size == table.length) {
+        if (size >= (table.length * LOAD_FACTOR)) {
             resize();
         }
         int hash = hash(key);
-        int i = hash & table.length - 1;
+        int i = hash & (table.length - 1);
         if (table[i] == null) {
             table[i] = new Node<>(hash, key, value);
             size++;
@@ -30,10 +32,9 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
 
     public V get(K key) {
         V result = null;
-        int i = hash(key) & table.length - 1;
+        int i = hash(key) & (table.length - 1);
         Node<K, V> t = table[i];
-        if (t != null
-                && (key == t.key || (key != null && key.equals(t.key)))) {
+        if (t != null && (Objects.equals(key, t.key))) {
             result = t.value;
         }
         return result;
@@ -41,10 +42,9 @@ public class SimpleHashMap<K, V> implements Iterable<V> {
 
     public boolean delete(K key) {
         boolean result = false;
-        int i = hash(key) & table.length - 1;
+        int i = hash(key) & (table.length - 1);
         Node<K, V> t = table[i];
-        if (t != null
-                && (key == t.key || (key != null && key.equals(t.key)))) {
+        if (t != null && (Objects.equals(key, t.key))) {
             table[i] = null;
             size--;
             modCount++;
