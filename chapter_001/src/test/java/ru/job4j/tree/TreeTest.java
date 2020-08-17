@@ -31,6 +31,18 @@ public class TreeTest {
     }
 
     @Test
+    public void whenAddUnsuccessful() {
+        Tree<Integer> tree = new Tree<>(1);
+        tree.add(1, 2);
+        tree.add(1, 3);
+        tree.add(2, 4);
+        assertThat(
+                tree.add(2, 1),
+                is(false)
+        );
+    }
+
+    @Test
     public void when6ElNotBinary() {
         Tree<Integer> tree = new Tree<>(1);
         tree.add(1, 2);
