@@ -34,10 +34,8 @@ public class Analize {
         for (User user : current) {
             if (!map.containsKey(user.id)) {
                 map.put(user.id, "added");
-            }
-            User u = findById(previous, user.id);
-            if (u != null) {
-                if (!user.name.equals(u.name)) {
+            } else {
+                if (!user.name.equals(map.get(user.id))) {
                     map.put(user.id, "changed");
                 }
             }
@@ -51,7 +49,7 @@ public class Analize {
 
     private static void fillMap(List<User> previous, HashMap<Integer, String> map) {
         for (User user : previous) {
-            map.put(user.id, "empty");
+            map.put(user.id, user.name);
         }
     }
 
