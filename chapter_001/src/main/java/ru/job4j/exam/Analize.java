@@ -8,60 +8,29 @@ public class Analize {
         Info info = new Info();
         HashMap<Integer, String> map = new HashMap<>();
         fillMap(previous, map);
-        modMap(previous, current, map);
-        return getInfo(map, info);
+        return getInfo(previous, current, info, map);
     }
 
-    private static Info getInfo(HashMap<Integer, String> map, Info info) {
-        for (Map.Entry<Integer, String> entry : map.entrySet()) {
-            switch (entry.getValue()) {
-                case "changed":
+    private static Info getInfo(List<User> previous, List<User> current,
+                                 Info info, HashMap<Integer, String> map) {
+        for (User user : current) {
+            if (map.containsKey(user.id)) {
+                if (!user.name.equals(map.get(user.id))) {
                     info.changed++;
-                    break;
-                case "deleted":
-                    info.deleted++;
-                    break;
-                case "added":
-                    info.added++;
-                    break;
-                default: break;
+                }
+            } else {
+                info.added++;
             }
         }
+        info.deleted = previous.size() + info.added - current.size();
         return info;
     }
 
-    private static void modMap(List<User> previous, List<User> current, HashMap<Integer, String> map) {
-        for (User user : current) {
-            if (!map.containsKey(user.id)) {
-                map.put(user.id, "added");
-            } else {
-                if (!user.name.equals(map.get(user.id))) {
-                    map.put(user.id, "changed");
-                }
-            }
-        }
-        for (User user : previous) {
-            if (findById(current, user.id) == null) {
-                map.put(user.id, "deleted");
-            }
-        }
-    }
-
-    private static void fillMap(List<User> previous, HashMap<Integer, String> map) {
+    private static void fillMap(List<User> previous,
+                                HashMap<Integer, String> map) {
         for (User user : previous) {
             map.put(user.id, user.name);
         }
-    }
-
-    private static User findById(List<User> c, int id) {
-        User user = null;
-        for (User u : c) {
-            if (u.id == id) {
-                user = u;
-                break;
-            }
-        }
-        return user;
     }
 
     public static class User {
