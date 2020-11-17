@@ -11,8 +11,9 @@ public class ArgsName {
     }
 
     private void parse(String[] args) {
-        if (args.length == 0) {
-            throw new IllegalArgumentException("There are no program arguments.");
+        if (args.length < 1) {
+            throw new IllegalArgumentException("Run the program by passing at least one argument."
+                    + "Usage java -jar argsname.jar PARAM_1 [PARAM_N]");
         }
         for (String arg : args) {
             String[] param = arg.split("=");
