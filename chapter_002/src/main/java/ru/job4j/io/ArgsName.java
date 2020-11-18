@@ -11,11 +11,14 @@ public class ArgsName {
     }
 
     private void parse(String[] args) {
-        if (args.length < 2) {
-            throw new IllegalArgumentException("Usage java -jar argsname.jar PARAM_1 PARAM_2");
+        if (args.length < 1) {
+            throw new IllegalArgumentException("Run the program by passing at least one argument.");
         }
         for (String arg : args) {
             String[] param = arg.split("=");
+            if (param.length != 2) {
+                throw new IllegalArgumentException("Invalid parameter. Usage: -PARAMETER=VALUE");
+            }
             values.put(param[0].substring(1), param[1]);
         }
     }
