@@ -10,10 +10,14 @@ public class ConsoleChat {
     private static final String OUT = "закончить";
     private static final String STOP = "стоп";
     private static final String CONTINUE = "продолжить";
+    private final HashMap<String, Integer> command = new HashMap<>();
 
     public ConsoleChat(String path, String botAnswers) {
         this.path = path;
         this.botAnswers = botAnswers;
+        command.put(OUT, -1);
+        command.put(STOP, 0);
+        command.put(CONTINUE, 1);
     }
 
     public void run() {
@@ -22,37 +26,27 @@ public class ConsoleChat {
         Random rnd = new Random();
         Scanner sc = new Scanner(System.in);
         List<String> answers = readAnswers(botAnswers);
-        StringJoiner sj = new StringJoiner(System.lineSeparator());
+        List<String> dialog = new ArrayList<>();
         System.out.println("Числобот готов!");
         do {
             str = sc.nextLine();
-            sj.add(str);
-            switch (str) {
-                case STOP:
-                    flag = 0;
-                    break;
-                case CONTINUE:
-                    flag = 1;
-                    break;
-                case OUT:
-                    flag = -1;
-                    break;
-                default:
-                    break;
-            }
+            dialog.add(str + System.lineSeparator());
+            flag = command.getOrDefault(str, flag);
             if (flag == 1) {
                 String answer = answers.get(rnd.nextInt(answers.size()));
                 System.out.println(answer);
-                sj.add(answer);
+                dialog.add(answer + System.lineSeparator());
             }
         } while (flag != -1);
-        writeDialog(sj);
+        writeDialog(dialog);
     }
 
-    private void writeDialog(StringJoiner sj) {
+    private void writeDialog(List<String> dialog) {
         try (BufferedWriter out = new BufferedWriter(
                 new FileWriter(path, Charset.forName("WINDOWS-1251")))) {
-            out.write(sj.toString());
+            for (String str : dialog) {
+                out.write(str);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
