@@ -1,5 +1,8 @@
 package ru.job4j.io.socket;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,7 +11,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class EchoServer {
-    public static void main(String[] args) throws IOException {
+    public static final Logger LOG = LoggerFactory.getLogger(EchoServer.class.getName());
+
+    public static void main(String[] args) {
         try (ServerSocket server = new ServerSocket(9000)) {
             int flag = 0;
             while (flag != 1) {
@@ -29,6 +34,8 @@ public class EchoServer {
                     }
                 }
             }
+        } catch (Exception e) {
+            LOG.error("Exception in log: ", e);
         }
     }
 }
