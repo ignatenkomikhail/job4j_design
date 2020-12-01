@@ -16,4 +16,12 @@ public class Service {
                 + ", contact='" + contact + '\''
                 + '}';
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getContact() {
+        return contact;
+    }
 }
